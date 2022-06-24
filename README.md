@@ -1,21 +1,16 @@
 # etalage
 
-generated using Luminus version "4.25"
+now back to Golang
 
 FIXME
 
 ## Prerequisites
 
-You will need [Leiningen][1] 2.0 or above installed.
-
-[1]: https://github.com/technomancy/leiningen
-
+go 1.16 above
 ## Running
 
-To start a web server for the application, run:
-
-    lein run 
+./etalage-server.exe
 
 ## License
 
-Copyright © 2021 FIXME
+Copyright © 2022 FIXME
