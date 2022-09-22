@@ -14,7 +14,6 @@ func (r *Router) BindRoute() (success bool) {
 		return false
 	}
 	userController := C.UserController{}.New()
-	r.routeBinder.GET("/ping", userController.AddUser)
-
+	r.routeBinder.POST("/ping", userController.AddUser)
 	return true
 }

@@ -1,25 +1,44 @@
 package controller
 
 import (
+	"log"
 	"net/http"
-	"time"
 
+	"github.com/etalage/etalage-server/model"
+	"github.com/etalage/etalage-server/repo"
+	"github.com/etalage/etalage-server/repo/repointerface"
 	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {
-	AddUser gin.HandlerFunc
+	UserManager repointerface.UserManager
 }
 
 func (u UserController) New() (controller *UserController) {
 	controller = new(UserController)
-	controller.AddUser = addUser
+	controller.inject()
 	return controller
 }
 
-func addUser(context *gin.Context) {
-	time.Now()
+func (u *UserController) inject() {
+	u.UserManager = repo.UserRepo{}
+}
+
+func (controller UserController) AddUser(context *gin.Context) {
+	var user model.User
+	if err := context.ShouldBindJSON(&user); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"message": "error",
+		})
+	}
+	log.Println("user:", user.UserName, " password:", user.Password)
+	if controller.UserManager.AddUser(user) > 0 {
+		context.JSON(http.StatusOK, gin.H{
+			"message": "hello:" + user.UserName,
+		})
+		return
+	}
 	context.JSON(http.StatusOK, gin.H{
-		"message": time.Now(),
+		"message": "sorry," + user.UserName,
 	})
 }
